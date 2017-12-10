@@ -1,33 +1,40 @@
 require 'json'
 require 'open-uri'
 require 'optionparser'
+require 'colorize'
 require "linggle/version"
+require 'linggle/api'
+require 'linggle/string'
+
+# resource
+# https://kpumuk.info/ruby-on-rails/colorizing-console-ruby-script-output/
 module Linggle
-  API = 'http://linggle.com/query'.freeze
-  TIMEOUT = 10
+
   # Your code goes here...
-  def self.execute
+  def self.execute()
 
-    query = ""
+    args =  parse
+    query_str = args.join(' ')
+    # puts "parse result #{args}"
     
-    # TODO rescue network exception, and follow redirections
-    content = open(
-      URI::encode("#{api}/query"),
-      read_timeout: TIMEOUT
-    ).read
-
-    entries = JSON.parse(content)
+    # TODO rescue network exception, and follow redirections..
+    puts query(query_str)
 
   end
 
 
-  def self.parse
+  def self.parse()
     OptionParser.new do |parser|
-    parser.banner = "Usage: hello.rb [options]"
 
-    parser.on("-h", "--help", "Show this help message") do ||
-      puts parser
-    end
+      if ARGV.size == 0
+        puts HELPS.map{|k,v| v }
+        exit 0
+      end
+
+      parser.on("-h", "--help") do
+        puts HELPS.map{|k,v| v }
+        exit 0
+      end
 
     end.parse!
 
