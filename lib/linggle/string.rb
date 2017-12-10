@@ -30,4 +30,11 @@ class String
   # [:bold, :italic, :blink].each do |name|
   #   define_method(:"#{name}) do ||
   # end
+
+  # 55.6%
+  Strips = '|' * 100
+  def percent_line
+    count = (self[/\d+\.?\d+/].to_f).round 
+    "[#{ Strips[0..count].red } #{ ' ' * (100 - count) }]" 
+  end
 end

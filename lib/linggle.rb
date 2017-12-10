@@ -12,14 +12,23 @@ module Linggle
 
   # Your code goes here...
   def self.execute()
-
-    args =  parse
+    args =  parse()
     query_str = args.join(' ')
     # puts "parse result #{args}"
     
     # TODO rescue network exception, and follow redirections..
-    puts query(query_str)
-
+    entries = query(query_str)
+    # {
+    #   "count"=>13966963,
+    #   "count_str"=>"14,000,000",
+    #   "percent"=>"54.5%",
+    #   "phrase" => 
+    #       ["very", "good"]
+    # }
+    entries = entries.take(20).map do |e|
+      "#{e['phrase'].join(' ').green}   频率: #{e['count_str'].yellow}  #{e['percent']} \n #{e['percent'].percent_line} \n \n"
+    end
+    puts entries
   end
 
 
