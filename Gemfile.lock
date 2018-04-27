@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    linggle (0.1.0)
+    linggle (0.02)
+      colorize (~> 0.8.0)
 
 GEM
   remote: https://gems.ruby-china.org/
@@ -28,10 +29,9 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.16.a)
-  colorize (~> 0.8.0)
   linggle!
   rake (~> 10.0)
   rspec (~> 3.0)
 
 BUNDLED WITH
-   1.16.0.pre.3
+   1.16.1
