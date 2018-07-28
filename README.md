@@ -1,6 +1,6 @@
 # Linggle
-A Linggle(http://linggle.com/) in cli
-
+Use Linggle(http://linggle.com/) in terminal, Linggle is not for translate, for translate purpose
+, see [translate-shell](https://github.com/soimort/translate-shell)
 ![linggle cli](https://raw.githubusercontent.com/fffx/linggle-cli/master/assets/short.png)
 
 ## Installation
