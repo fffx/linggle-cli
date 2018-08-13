@@ -1,10 +1,11 @@
 require 'json'
-require 'open-uri'
+require 'faraday'
 require 'optionparser'
 require 'colorize'
 require "linggle/version"
 require 'linggle/api'
 require 'linggle/string'
+require 'linggle/help_doc'
 
 # resource
 # https://kpumuk.info/ruby-on-rails/colorizing-console-ruby-script-output/
@@ -14,19 +15,23 @@ module Linggle
   def self.execute()
     args =  parse()
     query_str = args.join(' ')
-    # puts "parse result #{args}"
-    
+
     # TODO rescue network exception, and follow redirections..
-    entries = query(query_str)
-    # {
-    #   "count"=>13966963,
-    #   "count_str"=>"14,000,000",
-    #   "percent"=>"54.5%",
-    #   "phrase" => 
-    #       ["very", "good"]
-    # }
-    entries = entries.take(20).map do |e|
-      "#{e['phrase'].join(' ').green}   频率: #{e['count_str'].yellow}  #{e['percent']} \n #{e['percent'].percent_line} \n \n"
+    results = Api.new.query(query_str)
+=begin
+     {
+         "query": "go ?to schoo",
+         "time": 1534167385507,
+         "ngrams": [
+             ["go to school", 667988],
+             ["go school", 6137]
+          ],
+          "total": 674125
+      }
+=end
+    entries = results['ngrams'].take(20).map do |x|
+      percent = ( (x[1].to_f/results['total']).round(2) * 100 ).to_s
+      "#{x[0].green}   Percent: #{percent.yellow}  #{x[1]} \n #{percent.percent_line} \n \n"
     end
     puts entries
   end

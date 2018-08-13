@@ -34,7 +34,8 @@ class String
   # 55.6%
   Strips = '|' * 100
   def percent_line
-    count = (self[/\d+\.?\d+/].to_f).round 
-    "[#{ Strips[0..count].red } #{ ' ' * (100 - count) }]" 
+    count = self.to_i
+    puts count
+    "[#{ Strips[0..count].red } #{ ' ' * (100 - count) }]"
   end
 end
