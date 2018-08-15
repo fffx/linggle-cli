@@ -1,5 +1,9 @@
+require 'fileutils'
+require 'sdbm'
+require 'date'
 module Linggle
   API_BASE = 'http://linggle.com'.freeze
+  STORE_PATH = "#{ENV['HOME']}/linggle_cli".freeze
   TIMEOUT = 3
   COLORS = {
     e: :yellow, # example
@@ -42,13 +46,18 @@ module Linggle
    private
    def csrf_token
     return @csrf_token if @csrf_token
-    cookies = conn.get.env.response_headers['set-cookie']
-    # TODO save token with'sdbm'
-    # File.open '.linggle_cli'
-    crsf_token_data = cookies.split('; ').map {|x| x.split('=', 0) }.to_h
 
-
-    @csrf_token = crsf_token_data['csrftoken']
+    FileUtils.mkdir STORE_PATH unless File.exists?(STORE_PATH)
+    SDBM.open "#{STORE_PATH}/.linggle_cli" do |db|
+      expires  = DateTime.parse(db['expires']) rescue nil
+      if expires && expires > DateTime.now && (@csrf_token = db['csrf_token'])
+        return @csrf_token
+      else
+        cookies = conn.get.env.response_headers['set-cookie'].split('; ').map {|x| x.split('=', 0) }.to_h
+        db['expires'] = cookies['expires']
+        @csrf_token = db['csrf_token'] = cookies['csrftoken']
+      end
+    end
    end
  end
 end
