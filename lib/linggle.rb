@@ -14,9 +14,9 @@ module Linggle
   # Your code goes here...
   def self.execute()
     args =  parse()
-    query_str = args.join(' ')
+    return if args.nil? && args.size < 1
+    query_str = args.drop(0).join(' ')
 
-    # TODO rescue network exception, and follow redirections..
     results = Api.new.query(query_str)
 =begin
      {
@@ -33,23 +33,36 @@ module Linggle
       percent = ( (x[1].to_f/results['total']).round(2) * 100 ).to_s
       "#{x[0].green}   Percent: #{percent.yellow}  #{x[1]} \n #{percent.percent_line} \n \n"
     end
-    puts entries
   end
 
 
   def self.parse()
     OptionParser.new do |parser|
 
+      parser.banner = 'Linggle Command Line Interface:\n availale options: \n \n'
       if ARGV.size == 0
+        puts parser
         puts HELPS.map{|k,v| v }
         exit 0
       end
 
-      parser.on("-h", "--help") do
+      parser.on("-u", "--usage", 'Show  Usages') do
         puts HELPS.map{|k,v| v }
         exit 0
       end
 
+      parser.on("-h", "--help", 'Show This Help') do
+        puts parser
+        puts HELPS.map{|k,v| v }
+      end
+
+      parser.on('-V', '--version', 'Show Version') do
+        puts "Linggle CLI Version: #{VERSION}"
+        exit 0
+      end
+
+
+      parser
     end.parse!
 
   end
