@@ -1,3 +1,3 @@
 module Linggle
-  VERSION = "0.04.2"
+  VERSION = "0.04.3"
 end

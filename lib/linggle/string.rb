@@ -35,7 +35,6 @@ class String
   Strips = '|' * 100
   def percent_line
     count = self.to_i
-    puts count
     "[#{ Strips[0..count].red } #{ ' ' * (100 - count) }]"
   end
 end

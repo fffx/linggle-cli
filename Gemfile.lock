@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    linggle (0.04.1)
+    linggle (0.04.3)
       colorize (~> 0.8.0)
       faraday (~> 0.15.0)
 

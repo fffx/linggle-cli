@@ -29,9 +29,9 @@ module Linggle
           "total": 674125
       }
 =end
-    entries = results['ngrams'].take(20).map do |x|
+    results['ngrams'].take(20).each do |x|
       percent = ( (x[1].to_f/results['total']).round(2) * 100 ).to_s
-      "#{x[0].green}   Percent: #{percent.yellow}  #{x[1]} \n #{percent.percent_line} \n \n"
+      puts "#{x[0].green}   Percent: #{percent.yellow}  #{x[1]} \n #{percent.percent_line} \n \n"
     end
   end
 
