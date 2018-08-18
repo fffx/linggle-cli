@@ -2,6 +2,7 @@ require 'json'
 require 'faraday'
 require 'optionparser'
 require 'colorize'
+require 'terminal-table'
 require "linggle/version"
 require 'linggle/api'
 require 'linggle/string'
@@ -29,14 +30,21 @@ module Linggle
           "total": 674125
       }
 =end
-    results['ngrams'].take(20).each do |x|
-      percent = ( (x[1].to_f/results['total']).round(2) * 100 ).to_s
-      puts "#{x[0].green}   Percent: #{percent.yellow}  #{x[1]} \n #{percent.percent_line} \n \n"
+    puts 'No result' and return if results['ngrams'].size == 0
+    table = Terminal::Table.new headings: ['Index', 'N-gram', 'Percent', 'Count'] do |t|
+      t.style = { :border_top => false, :border_bottom => false }
+      #t.style = {:all_separators => true}
+      t.rows = results['ngrams'].take(10).map.with_index do |x, index|
+        percent = '%.1f' % ( (x[1].to_f/results['total']) * 100)
+        [index, x[0].green, "#{percent.yellow}%", x[1].to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse]
+      end
     end
+    puts table
   end
 
 
   def self.parse()
+    options = {}
     OptionParser.new do |parser|
 
       parser.banner = 'Linggle Command Line Interface:\n availale options: \n \n'
@@ -64,6 +72,5 @@ module Linggle
 
       parser
     end.parse!
-
   end
 end

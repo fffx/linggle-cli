@@ -4,6 +4,7 @@ PATH
     linggle (0.04.3)
       colorize (~> 0.8.0)
       faraday (~> 0.15.0)
+      terminal-table (~> 1.8.0)
 
 GEM
   remote: https://gems.ruby-china.org/
@@ -27,6 +28,9 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
+    terminal-table (1.8.0)
+      unicode-display_width (~> 1.1, >= 1.1.1)
+    unicode-display_width (1.4.0)
 
 PLATFORMS
   ruby
